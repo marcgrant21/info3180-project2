@@ -1,9 +1,9 @@
 from app import app
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import  StringField
+from wtforms import  StringField, PasswordField
 from wtforms.fields import TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, InputRequired
 
 class Cars(FlaskForm):
     description = StringField('description', validators=[InputRequired()])
