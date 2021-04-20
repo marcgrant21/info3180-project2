@@ -16,7 +16,7 @@ from functools import wraps
 
 
 @app.route('/')
-def home():
+def index():
     """Render website's home page."""
     return render_template('index.html')
     
@@ -48,7 +48,7 @@ def token_authenticate(t):
 
 @app.route('/api/register',methods=["POST"])
 def register():
-    form = RegistrationForm()
+    form = Users()
     
     if request.method=='POST' and form.validate_on_submit():
         
@@ -57,14 +57,13 @@ def register():
             pword = form.password.data
             location=form.location.data
             bio=form.biography.data
-            lname=form.lastname.data
-            fname=form.firstname.data
+            name=form.fullname.data
             mail=form.email.data
             photo = form.photo.data
             date = str(datetime.date.today())
             filename = uname+secure_filename(photo.filename)
             
-            user = Users(username=uname, password=pword, first_name=fname, last_name=lname, email=mail, location=location, biography=bio, profile_photo=filename, joined_on=date)
+            user = Users(username=uname, password=pword, name=name, email=mail, location=location, biography=bio, profile_photo=filename, date_joined=date)
             photo.save(os.path.join("./app",app.config['PROFILE_IMG_UPLOAD_FOLDER'], filename))
             db.session.add(user)
             db.session.commit()
