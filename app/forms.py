@@ -31,4 +31,6 @@ class Users(FlaskForm):
     photo= FileField('Profile Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
     date_joined = StringField('date_joined', validators=[InputRequired()])
     
-
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
