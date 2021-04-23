@@ -2,10 +2,10 @@ from app import app
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import  StringField, PasswordField
-from wtforms.fields import TextAreaField
+from wtforms.fields import TextAreaField, SelectField
 from wtforms.validators import DataRequired, InputRequired
 
-class Cars(FlaskForm):
+class Car(FlaskForm):
     description = StringField('description', validators=[InputRequired()])
     make = PasswordField('make', validators=[InputRequired()])
     model = StringField('model', validators=[InputRequired()])
@@ -17,19 +17,19 @@ class Cars(FlaskForm):
     photo= FileField('Car Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
     user_id = StringField("", validators=[InputRequired()])
 
-class Favourites(FlaskForm):
+class Favourite(FlaskForm):
     car_id = StringField("", validators=[InputRequired()])
     user_id = StringField("", validators=[InputRequired()])
     
-class Users(FlaskForm):
+class User(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
-    name = StringField('First-name', validators=[InputRequired()])
+    name = StringField('Name', validators=[InputRequired()])
     email = StringField('Email', validators=[InputRequired()])
     location = StringField('Location', validators=[InputRequired()])
     biography = TextAreaField('Biography',validators=[InputRequired()])
     photo= FileField('Profile Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
-    date_joined = StringField('date_joined', validators=[InputRequired()])
+
     
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
