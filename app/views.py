@@ -14,12 +14,14 @@ from functools import wraps
 # Routing for your application.
 ###
 
-
-@app.route('/')
-def index():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
     """Render website's home page."""
     return render_template('index.html')
-    
+
+
+     
 def token_authenticate(t):
     @wraps(t)
     def decorated(*args, **kwargs):
@@ -48,23 +50,23 @@ def token_authenticate(t):
 
 @app.route('/api/register',methods=["POST"])
 def register():
-    form = Users()
+    form = User()
     
-    if request.method=='POST' and form.validate_on_submit():
+    if form.validate_on_submit():
         
         try:
             uname = form.username.data
             pword = form.password.data
             location=form.location.data
             bio=form.biography.data
-            name=form.fullname.data
+            name=form.name.data
             mail=form.email.data
             photo = form.photo.data
             date = str(datetime.date.today())
             filename = uname+secure_filename(photo.filename)
             
             user = Users(username=uname, password=pword, name=name, email=mail, location=location, biography=bio, profile_photo=filename, date_joined=date)
-            photo.save(os.path.join("./app",app.config['PROFILE_IMG_UPLOAD_FOLDER'], filename))
+            photo.save(os.path.join(app.config["UPLOAD_PROFILE"], filename))
             db.session.add(user)
             db.session.commit()
             
@@ -108,96 +110,79 @@ def logout():
     return jsonify(message= "User successfully logged out.")
     
         
-@app.route('/api/cars', methods = ['GET'])
+@app.route('/api/cars', methods = ['GET','POST'])
 @token_authenticate
-def viewPosts():
-    allPosts = Posts.query.all()
-    posts = []
-    
-    
-    for post in allPosts:
-        user = Users.query.filter_by(id=post.user_id).first()
-
-        likeCount = len(Likes.query.filter_by(post_id=post.id).all())
-        postObj = {"id": post.id, "user_id": post.user_id, "username": user.username, "user_profile_photo": os.path.join(app.config['PROFILE_IMG_UPLOAD_FOLDER'],user.profile_photo),"photo": os.path.join(app.config['POST_IMG_UPLOAD_FOLDER'],post.photo), "caption": post.caption, "created_on": strf_time(post.created_on, "%d %B %Y"), "likes": likeCount}
-        posts.append(postObj)
-        
-    return jsonify(posts=posts)
-    
-    
-    
-@app.route('/api/cars', methods =['GET','POST'])
-@token_authenticate
-def posts(user_id):
-    
+def allcars():
     if request.method == 'GET':
-        posts = Posts.query.filter_by(user_id = user_id).all()
         
-        user = Users.query.filter_by(id=user_id).first()
-        user_follower_count = len(Follows.query.filter_by(user_id=user.id).all())
-        response = {"status": "ok", "post_data":{"firstname":user.first_name, "lastname": user.last_name, "location": user.location, "joined_on": "Member since "+strf_time(user.joined_on, "%B %Y"), "bio": user.biography, "postCount": len(posts), "followers": user_follower_count, "profile_image": os.path.join(app.config['PROFILE_IMG_UPLOAD_FOLDER'],user.profile_photo), "posts":[]}}
+
+        allcars = Cars.query.all()
+        vcars = []
+        for car in allcars:
+            carObj = {"id": car.id, "user_id": car.user_id,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join(app.config['UPLOAD_VCARPHOTO'],car.photo) }
+            vcars.append(carObj)
         
-        for post in posts:
-            postObj = {"id":post.id, "user_id": post.user_id, "photo": os.path.join(app.config['POST_IMG_UPLOAD_FOLDER'], post.photo), "caption": post.caption, "created_on": post.created_on}
-            response["post_data"]["posts"].append(postObj)
-        
-        return jsonify(response)
-    
-    
+        return jsonify(cars=vcars)
+
     if request.method == 'POST':
         
-        form = PostForm()
+        form = Car()
         
         if form.validate_on_submit():
             
+            description = form.description.data
+            make = form.make.data
+            model = form.model.data
+            colour = form.colour.data
+            year = form.year.data
+            transmission = form.transmission.data
+            car_type = form.car_type.data
+            price = form.price.data
+            photo= form.photo.data
             u_id = form.user_id.data
-            photo = form.photo.data
-            captn = form.caption.data
             
             user = Users.query.filter_by(id=u_id).first()
             
             filename = user.username+secure_filename(photo.filename)
             
-            create_date = str(datetime.date.today())
-            post = Posts(user_id=u_id,photo=filename,caption=captn ,created_on=create_date)
-            photo.save(os.path.join("./app", app.config['POST_IMG_UPLOAD_FOLDER'],filename))
-            db.session.add(post)
+            
+            car = Cars(description=description,make=make,model=model,colour=colour,year=year,transmission=transmission,car_type=car_type,price=price,photo=filename,user_id=u_id)
+
+            photo.save(os.path.join(app.config['UPLOAD_CARPHOTO'],filename))
+            db.session.add(car)
             db.session.commit()
-            return jsonify(status=201, message="Post Created")
+            
+            return jsonify(status=201, message="Car Created")
             
             
         print (form.errors.items())
         return jsonify(status=200, errors=form_errors(form))
 
+    
 
-
-# Like Route
-@app.route('/api/cars/<car_id>/favourites',methods = ['POST'])
+@app.route('/api/users/<user_id>', methods =['GET'])
 @token_authenticate
-def like(post_id):
-    
-    request_payload = request.get_json()
-    user_id = request_payload["user_id"]
-    post_id = request_payload["post_id"]
-    
-    post = Posts.query.filter_by(id=post_id).first()
-    Postlikes = Likes.query.filter_by(post_id=post_id).all()
-    
-    if post is None:
-        return jsonify(staus="", message="Post does not exist")
+def profile(user_id):
+        user = Users.query.filter_by(id=user_id).first()
+      
+        response = {"status": "ok", "ur_data":{"name":user.name, "location": user.location,"email": user.email,"username": "@"+user.username, "date_joined": user.date_joined, "bio": user.biography, "profile_image": os.path.join("../", app.config['UPLOAD_VPROFILE'],user.profile_photo)}}
         
-    if Postlikes is not None:
-        for like in Postlikes:
-            if like.user_id == user_id:
-                return jsonify(status=200, message="already liked")
-        
-    NewLike = Likes(post_id = post_id, user_id = user_id)
-    
-    db.session.add(NewLike)
-    db.session.commit()
-    
-    total_likes = len(Likes.query.filter_by(post_id=post_id).all())
-    return jsonify({"status":201,'message': 'post liked','likes':total_likes})
+        return jsonify(response)
+
+
+
+@app.route('/api/cars/<car_id>', methods =['GET'])
+@token_authenticate
+def car(car_id):
+
+        car = Cars.query.filter_by(id=car_id).first()
+      
+        response = {"status": "ok", "car_data":{"id": car.id, "make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join("../", app.config['UPLOAD_VCARPHOTO'],car.photo), "description":car.description,"colour": car.colour, "transmission":car.transmission,"car_type": car.car_type, "user_id": car.user_id}}
+        return jsonify(response)
+
+
+
+
 
 
 def strf_time(date, dateFormat):
@@ -226,10 +211,7 @@ def add_header(response):
     return response
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    """Custom 404 page."""
-    return render_template('404.html'), 404
+
 
 
 
