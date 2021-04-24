@@ -120,7 +120,7 @@ def allcars():
         allcars = Cars.query.all()
         vcars = []
         for car in allcars:
-            carObj = {"id": car.id, "user_id": car.user_id,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join(app.config['UPLOAD_VCARPHOTO'],car.photo) }
+            carObj = {"id": car.id, "user_id": car.user_id, "color": car.colour,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join(app.config['UPLOAD_VCARPHOTO'],car.photo) }
             vcars.append(carObj)
         
         return jsonify(cars=vcars)

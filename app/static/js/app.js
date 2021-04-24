@@ -8,8 +8,8 @@ app.component("app-header", {
   name: "AppHeader",
   template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-      <img src='static/images/car.png' class="small-logo"/>
-      <a class="navbar-brand" href="#">United Auto Sale</a>
+      <img src='static/images/car.png' class="small-logo"/> &nbsp  &nbsp
+      <a class="navbar-brand" href="#"> United Auto Sale</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -77,25 +77,24 @@ app.component("app-footer", {
 const Home = {
   name: "Home",
   template: `
-     <div class="row landing-container">
-        
-         <div class="col-md-4  landing-container-child float-clear">
-           <div>
-             <div class="card-body" style="padding-top: 0px;">
-              <h1>Buy and Sell Cars Online</h1>
-               <hr>
-               <p class="card-text">United Auto Sales provides the fastest, easiest and most user friendly way to buy or sell cars online. find a Great Price on the Vehicle You Want.</p>
-               <div style="margin-top: 10%;">
-                   <router-link class="btn btn-success col-md-5" to="/register">Register</router-link>
-                   <router-link class="btn btn-primary col-md-5" to="/login">Login</router-link>
-               </div>
-             </div>
-           </div>  
-         </div>
-         <div class="col-md-4 landing-container-child" style="margin-left: 5%;">
-             <img src="/static/images/download.png" id="landing-img"/>
-         </div>
-     </div>
+     <div class="row">
+      <div class="col-md-4  landing-container-child float-clear" style="margin-top: 6%;">
+        <div>
+          <div class="card-body">
+            <h1>Buy and Sell Cars Online</h1>
+            <hr>
+            <p class="card-text">United Auto Sales provides the fastest, easiest and most user friendly way to buy or sell cars online. find a Great Price on the Vehicle You Want.</p>
+            <div style="margin-top: 15%;">
+              <router-link class="btn btn-primary col-md-5" to="/register">Register</router-link> &nbsp
+              <router-link class="btn btn-success col-md-5" to="/login">Login</router-link>
+            </div>
+          </div>
+        </div>  
+      </div>
+      <div class="col-md-4 " style="margin-left: 20%;">
+        <img src="/static/images/download.png" id="landing-img" style="height: 540px; width: 625px;"/>
+      </div>
+    </div>
     `,
   data: function () {
     return {};
@@ -108,46 +107,53 @@ const Register = {
   template: `
         <div>
           -
-          <h3 class="card-header center text-muted">Register</h3>
-          <div class="card center">
+          <h2 class="card-header center headr">Register New User</h2>
+          <div class="cardf center">
            
             <form id="register" @submit.prevent="Register" enctype="multipart/form-data">
+            
+            <div class="row " style="padding-left:12px; margin-bottom: 13px;">
+            <div>
+                <label>Username:</label><br/>
+               <input type='text' id='username' name='username' style="width:250px;"/>
+             
+            </div>
+            <div class="spacebetween">
+                <label>Password:</label><br/>
+               <input type='password' id='password' name='password' style="width: 250px;"/>
+            </div>
+            </div>
+
+            <div class="row " style="padding-left:12px; margin-bottom: 13px; ">
             <div>
                 <label>Fullname:</label><br/>
                 
-               <input type='text' id='name' name='name' style="width: 100%;"/>
+               <input type='text' id='name' name='name' placeholder="john doe" style="width: 250px;"/>
             </div>
-            <div>
-                <label>Username:</label><br/>
-               <input type='text' id='username' name='username' style="width: 100%;"/>
-               
-            </div>
-            <div>
-                <label>Password:</label><br/>
-               <input type='password' id='password' name='password' style="width: 100%;"/>
-            </div>
-            <div>
+            <div class="spacebetween">
                 <label>Email:</label><br/>
-               <input type='text' id='email' name='email' placeholder="jdoe@example.com" style="width: 100%;"/>
+               <input type='text' id='email' name='email' placeholder="jdoe@example.com" style="width: 250px;"/>
             </div>
-            <div>
+            </div>
+
+            <div style="margin-bottom: 13px; ">
                 <label>Location:</label><br/>
-               <input type='text' id='location' name='location' style="width: 100%;"/>
+               <input type='text' id='location' name='location' style="width: 530px;"/>
             </div>
-            <div>
+            <div style="margin-bottom: 13px; ">
                 <label>Biography:</label><br/>
-               <textarea name="biography" rows="3" style="width:100%"> </textarea><br/>
+               <textarea name="biography" rows="3" style="width:530px; height:100px"> </textarea><br/>
             </div>
             <div>
-                <label for='photo' class='btn btn-primary'>Browse....</label> <span>{{ filename }}</span>
+                <label for='photo' class='btn' style="border: 0.5px solid black; width: 75px;">Browse</label> <span>{{ filename }}</span>
                 
                 <input id="photo" type="file" name='photo' style="display: none" v-on:change = "onFileSelected" /><br/>
                 
             </div>
                 
-                 <div>
-                      <input type="submit" id="submit" class="btn btn-success" value="Register" /> 
-                    </div>
+                 <div style="width: 270px;">
+                      <input type="submit" id="submit" class="btn btn-success"  value="Register" /> 
+                  </div>
                 
             </form>
             <div v-if='messageFlag' style="margin-top: 5%;">
@@ -219,8 +225,8 @@ const Login = {
   template: `
     <div>
       <form id="login-form" @submit.prevent="login">
-          <div class="card-header center">
-            <strong>Login</strong>
+          <div class="card-header center headr">
+            <strong>Login to your account</strong>
           </div>
           <div class="card center">
             <div class="card-body login">
@@ -319,49 +325,51 @@ const Explore = {
   name: "Explore",
   template: `
     <div>
-          <div class="card-header center">
+      <div style="margin-bottom:5%;">
+        <div class="card-header headr" style="padding-left:148px;">
             <strong>Explore</strong>
+        </div>
+        <div class="cardS center">
+          <div class="row">
+            <div style="margin-bottom:3%; margin-left:3%;">
+              <label for='make'><strong>Make</strong></label><br>
+              <input type="search"  v-model="make" id='make' name='make' style="width: 250px;"/>
+            </div>
+            <div class="spacebetween" style="margin-bottom:3%;">
+              <label for='model'><strong>Model</strong></label><br>
+              <input type="search" v-model="model" id='model' name='model' style="width: 250px;"/>
+            </div>
+            <div class="spacebetween" style="margin-top:3%;">
+              <button id="submit" style="width: 150px;" v-on:click="search" class="btn btn-success">Search</button> 
+            </div>
           </div>
-          <div class="card center">
-          
-              <div style="margin-top:5%;">
-                <label for='make'><strong>Make</strong></label><br>
-                <input type="search"  v-model="make" id='make' name='make' style="width: 100%;"/>
-              </div>
-              <div style="margin-top:5%;">
-                <label for='model'><strong>Model</strong></label><br>
-                <input type="search" v-model="model" id='model' name='model' style="width: 100%;"/>
-              </div>
-              <div style="margin-top:5%;">
-                <button id="submit"  v-on:click="search" class="btn btn-success">Search</button> 
-              </div>
-          </div>
+        </div>
+      </div>
       
       
-
-
-
       
-      <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
+      <div v-if="postFlag" class="col-md-7" style="padding-left:148px;">
         <div class="grid-container">
-        <div class="prop" v-for="(car, index) in cars">
-        <img id="pro-photo" v-bind:src=car.photo class="display-grid-pic"/>
-        <div class="text-paddding">
-		    <div class="margin Row">
-            <span class="headr ">{{ car.year }}</span>
-            <span class="faide">{{ car.make }}</span> 
-			  </div>
-			  <div class="">
-            <span class="faide">{{ car.model }}</span> 
-			  </div>
-			  <div class="margin-top">
-            <span class="btn-style">{{ car.price }}</span>
-			  </div>
+          <div class="prop" v-for="(car, index) in cars">
+            <img id="pro-photo" v-bind:src=car.photo class="display-grid-pic"/>
+            <div class="text-paddding">
+		          <div class="row" style="margin-left:1px;">
+                <div class="margin-top" style="width:125px;">
+                  <span class="texts">{{ car.year }} {{ car.make }}</span>
+                </div>
+                <div class="margin-top btn-style row" style="margin-left:6px; width:100px;">
+                  <img src='static/images/tag.png' class="icon-size" style="margin-top:5%;"/> 
+                  $<span class="">{{ car.price }}</span>
+			          </div> 
+			        </div>
+			        <div class="">
+                <span class="faide">{{ car.model }}</span> 
+			        </div>
+            </div>
+		        <div class="view-btn margin-top2" >
+              <router-link class="txt" :to="{name: 'cars', params: {car_id: car.id}}">View more detail</router-link>
+            </div>
           </div>
-		    <div class="view-btn margin-top2" >
-            <router-link class="btn btn-success col-md-5" :to="{name: 'cars', params: {car_id: car.id}}">View Property</router-link>
-        </div>
-        </div>
         </div>
       </div>
       <div v-else>
@@ -443,67 +451,74 @@ const AddCar = {
   template: `
   <div>
     <form class="center" id="npostform" @submit.prevent="submit" enctype="multipart/form-data">
-      <div class="card-header center"><strong>New Post</strong></div>
-      <div class="card center">
-        <div class="card-body">
-        <div>
-            <label>Make:</label><br/>
-            
-           <input type='text' id='make' name='make' style="width: 100%;"/>
-        </div>
-        <div>
-            <label>model:</label><br/>
-           <input type='text' id='model' name='model' style="width: 100%;"/>
-           
-        </div>
-        <div>
-            <label>colour:</label><br/>
-           <input type='text' id='colour' name='colour' style="width: 100%;"/>
-        </div>
-        <div>
-            <label>year:</label><br/>
-           <input type='text' id='year' name='year' placeholder="2000" style="width: 100%;"/>
-        </div>
-        <div>
-            <label>price:</label><br/>
-           <input type='text' id='price' name='price' style="width: 100%;"/>
-        </div>
-        <div>
-            <label>car_type:</label><br/>
-            <select name="car_type" id="car_type" placeholder="Choose Car Type" style="width: 100%;">
-              <option value=""></option>
-              <option value="Sedan">Sedan</option>
-              <option value="SUV">SUV</option>
-              <option value="Truck">Truck</option>
-              <option value="Van">Van</option>
-              <option value="Coupe">Coupe</option>
-              <option value="Wagon">Wagon</option>
-              <option value="Convertible">Convertible</option>
-              <option value="Sports Car">Sports Car</option>
-              <option value="Hybrid/Electric">Hybrid/Electric</option>
-            </select>
-        </div>
-        <div>
-            <label>transmission:</label><br/>
-            <select name="transmission" id="transmission" placeholder="Choose Transmission" style="width: 100%;">
-              <option value=""></option>
-              <option value="Automatic">Automatic</option>
-              <option value="Manual">Manual</option>
-              <option value="Automated Manual">Automated Manual</option>
-            </select> 
-        </div>
-        <div>
-            <label>description:</label><br/>
-           <textarea name="description" rows="3" style="width:100%"> </textarea><br/>
-        </div>
+      <div class="card-header center headr"><strong>Add New Car</strong></div>
+        <div class="cardf center">
+          <div class="card-body">
+            <div class="row " style="padding-left:12px; margin-bottom: 13px;">
+              <div>
+                <label>Make:</label><br/>
+                <input type='text' id='make' name='make' style="width: 250px;"/>
+              </div>
+              <div class="spacebetween">
+                <label>model:</label><br/>
+                <input type='text' id='model' name='model' style="width: 250px;"/>
+              </div>
+            </div>
 
-          	<label><strong>Photo</strong></label><br>
+            <div class="row " style="padding-left:12px; margin-bottom: 13px;">
+              <div>
+                 <label>colour:</label><br/>
+                  <input type='text' id='colour' name='colour' style="width: 250px;"/>
+              </div>
+              <div class="spacebetween">
+                <label>year:</label><br/>
+                <input type='text' id='year' name='year' placeholder="2000" style="width: 250px;"/>
+              </div>
+            </div>
+
+            <div class="row " style="padding-left:12px; margin-bottom: 13px;">
+              <div>
+                <label>price:</label><br/>
+                <input type='text' id='price' name='price' style="width: 250px;"/>
+              </div>
+              <div class="spacebetween">
+                <label>car_type:</label><br/>
+                <select name="car_type" id="car_type" placeholder="Choose Car Type" style="width: 250px;">
+                  <option value=""></option>
+                  <option value="Sedan">Sedan</option>
+                  <option value="SUV">SUV</option>
+                  <option value="Truck">Truck</option>
+                  <option value="Van">Van</option>
+                  <option value="Coupe">Coupe</option>
+                  <option value="Wagon">Wagon</option>
+                  <option value="Convertible">Convertible</option>
+                  <option value="Sports Car">Sports Car</option>
+                  <option value="Hybrid/Electric">Hybrid/Electric</option>
+                </select>
+              </div>
+            </div>
+     
+            <div>
+              <label>transmission:</label><br/>
+              <select name="transmission" id="transmission" placeholder="Choose Transmission" style="width: 250px;">
+                <option value=""></option>
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+                <option value="Automated Manual">Automated Manual</option>
+              </select> 
+            </div>
+            <div>
+              <label>description:</label><br/>
+              <textarea name="description" rows="3" style="width:530px; height:100px"> </textarea><br/>
+            </div>
+
+          	<label><strong>Upload Photo</strong></label><br>
           	<input id="user_id" name="user_id" v-bind:value="cu_id" style="display: none;"/>
-            <label class="btn" style="border: 0.5px solid black" for="photo"><strong>Browse</strong></label>
+            <label class="btn" style="border: 0.5px solid black" style="width: 75px;" for="photo"><strong>Browse</strong></label>
             <label>{{ filename }}</label>
             <br>
             <input type = "file" id="photo" name="photo" style="display: none;" v-on:change="updateFilename"/>
-            <button id="submit" class = "btn btn-success">Submit</button>
+            <button id="submit" class = "btn btn-success" style="width: 270px;">Submit</button>
             
             <div v-if='messageFlag' >
               <div v-if="errorFlag">
@@ -519,7 +534,8 @@ const AddCar = {
                 {{ message }}
               </div>
             </div>
-        </div>    
+          </div>    
+        </div>
       </div>
     </form>
   </div>
@@ -581,61 +597,63 @@ const AddCar = {
 const Profile = {
   name: "Profile",
   template: `
-  <div>
-    <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
-      <div class="card row" style="width:100%">
-        <div class="card-body row profile-haeder" style="padding: 0;" >
-          <img id="profile_image" class="col-md-2" v-bind:src="user.profile_image" style="width: 100%; height: 15%" />
-          <div id="profile_info" class="col-md-7" style="margin-top: 0px;padding-right: 0;">
+  <div class="margin-top" style="margin-top: 60px;">
+    <div v-if="postFlag" class="col-md-8 margin-top" style="margin: 0 auto;">
+      <div class="cardS row" style="">
+        <div class="card-body row profile-haeder" style="padding: 24px;" >
+          <img id="" class=" " v-bind:src="user.profile_image" style="width: 180px; height: 180px; border-radius: 100px; border: 1px solid #999999;" />
+          <div id="profile_info" class="" style="margin-left: 30px;">
         
-            <label>{{ user.profile_image }}</label><br>
-            <label>{{ user.name }}</label><br>
-            <label>{{ user.username }}</label><br>
-            <p id="bio" style="color: gray;">
+            
+            <label class="headr ">{{ user.name }}</label><br>
+            <label class="faideUp ">{{ user.username }}</label><br>
+            <p id="bio" style="color: gray;" class="text-box">
               {{ user.bio }}
             </p>
-            <label>{{ user.email }}</label><br>
-            <label>{{ user.location }}</label><br>
-            <label>{{ user.date_joined }}</label>
+            <label style="padding-right: 60px;color: gray;">Email</label><label>{{ user.email }}</label><br>
+            <label style="padding-right: 40px;color: gray;">Location</label><label>{{ user.location }}</label><br>
+            <label style="padding-right: 60px;color: gray;">Joined </label><label>{{ user.date_joined }}</label>
     
           </div>
         
         </div>
       </div>
-      <h3>Cars Favourited</h3>
-      <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
+      <div class="headr margin-top2" style=" ">
+        <strong>Cars Favourited</strong>
+      </div>
+      <div v-if="postFlag" class="margin-top2">
         <div class="grid-container">
-          <div class="prop" v-for="(car, index) in cars">
+          <div class="prop2" v-for="(car, index) in cars">
             <img id="pro-photo" v-bind:src=car.photo class="display-grid-pic"/>
             <div class="text-paddding">
-		          <div class="margin Row">
-                <span class="headr ">{{ car.year }}</span>
-                <span class="faide">{{ car.make }}</span> 
-			        </div>
-			        <div class="">
+              <div class="row" style="margin-left:1px;">
+                <div class="margin-top" style="width:125px;">
+                  <span class="texts">{{ car.year }} {{ car.make }}</span>
+                </div>
+                <div class="margin-top btn-style row" style="margin-left:6px; width:100px;">
+                  <img src='static/images/tag.png' class="icon-size" style="margin-top:5%;"/> 
+                  $<span class="">{{ car.price }}</span>
+                </div> 
+              </div>
+              <div class="">
                 <span class="faide">{{ car.model }}</span> 
-			        </div>
-			        <div class="margin-top">
-                <span class="btn-style">{{ car.price }}</span>
-			        </div>
+              </div>
             </div>
-		        <div class="view-btn margin-top2" >
-              <router-link class="btn btn-success col-md-5" :to="{name: 'cars', params: {car_id: car.id}}">View Property</router-link>
+            <div class="view-btn margin-top2" >
+              <router-link class="txt" :to="{name: 'cars', params: {car_id: car.id}}">View more detail</router-link>
             </div>
           </div>
         </div>
       </div>
       <div v-else>
         <div class="alert alert-primary" >
-          hi
+         
         </div>
       </div>
-
-
     </div>
     <div v-else>
       <div class="alert alert-primary" >
-        no
+        
       </div>
     </div>
   </div>
@@ -699,42 +717,39 @@ const ViewCar = {
   name: "ViewCar",
   template: `
   <div>
-    <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
-    <div class="">
-    <div class="ind-prop Row">
-        <div class="">
-        <img class="prop_pic"  v-bind:src="car.photo"/> 
+    <div v-if="postFlag" style="margin-top: 60px;">
+      
+        <div class="ind-prop Row">
+          
+            <img class="prop_pic"  v-bind:src="car.photo"/> 
+          
+          <div class="text-paddding2">
+            <label class="headr ">{{car.year}} {{car.make}}</label><br/>
+            <label class="faideUp">{{car.model}}</label>
+            <label class="blk margin-top text-box">{{car.description}}</label>
+            <div class="margin-top2 ">
+              
+              <label style="padding-right: 15px;color: gray;">Color</label><label style="padding-right: 50px; width:120px;"> {{car.colour}} </label>
+             
+              <label style="padding-right: 15px;color: gray;">Body Type</label><label style="">{{car.car_type}}</label>
+              <br/>
+              <label style="padding-right: 15px;color: gray;">Price</label><label style="padding-right: 20px; width:120px;">{{ car.price }}</label>
+              <label style="padding-right: 15px;color: gray;">Transmission</label><label class="">{{car.transmission}}</label>
             </div>
-        <div class="text-paddding2">
-          <span class="ind-headr ">{{car.year}}</span>
-            <div class="Row margin-top{">
-            <span class="btn-style2 blk">{{car.make}}</span>
-          <span class="blk btn-style3 margin-left">{{car.model}}</span>
-                 </div>
-          <span class="blk margin-top text-box">{{car.description}}</span>
-          <div class="Row margin-top2 ">
-          <div class="Row">
-          <span class="blk">color {{car.color}} </span>
-                 </div>
-           <div class="Row  margin-left">
-        
-          <span class="blk">body type {{car.car_type}}</span>
-                 </div>
-           </div>
-           <div class="Row margin-top2">
-           <span class="btn-style">price {{ car.price }}</span>
-          <span class="blk">transmission {{car.transmission}}</span>
+            <div class="Row" style="margin-top: 110px;">
+              <div class="margin-top2 view-btn2 color margin-bottom">	
+                <a href="#" class="color">Send Realtor</a>
+              </div>
+              <div class="space">
+              <div  style="border: 1px solid black; width:35px; height: 35px; border-radius: 100px; margin-left: 200px; background-color: #999999;">
+                <img class="like-ico liked" src="../static/images/liked.png"  v-on:click="like" style="width:15px; display: none; margin: 9px;"/>
+                <img class="like-ico like" src="../static/images/like.png"  v-on:click="like" style="width:15px; margin: 9px;"/>
+              </div>
+              </div>
+            </div>
           </div>
-        <div class="margin-top2 view-btn2 color margin-bottom">	
-            <a href="#" class="color">Send Realtor</a>
         </div>
-            <img class="like-ico liked" src="../static/images/liked.png"  v-on:click="like" style="width:20px; display: none;"/>
-            <img class="like-ico like" src="../static/images/like.png"  v-on:click="like" style="width:20px;"/>
-
-         </div>
-        
-    </div>
-    </div>
+      
     </div>
     <div v-else>
       <div class="alert alert-primary" >
