@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, InputRequired
 
 class Car(FlaskForm):
     description = StringField('description', validators=[InputRequired()])
-    make = PasswordField('make', validators=[InputRequired()])
+    make = StringField('make', validators=[InputRequired()])
     model = StringField('model', validators=[InputRequired()])
     colour = StringField('colour', validators=[InputRequired()])
     year = StringField('year', validators=[InputRequired()])
@@ -17,9 +17,6 @@ class Car(FlaskForm):
     photo= FileField('Car Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
     user_id = StringField("", validators=[InputRequired()])
 
-class Favourite(FlaskForm):
-    car_id = StringField("", validators=[InputRequired()])
-    user_id = StringField("", validators=[InputRequired()])
     
 class User(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
@@ -34,3 +31,5 @@ class User(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
+
+

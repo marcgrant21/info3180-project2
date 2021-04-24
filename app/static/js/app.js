@@ -319,6 +319,28 @@ const Explore = {
   name: "Explore",
   template: `
     <div>
+          <div class="card-header center">
+            <strong>Explore</strong>
+          </div>
+          <div class="card center">
+          
+              <div style="margin-top:5%;">
+                <label for='make'><strong>Make</strong></label><br>
+                <input type="search"  v-model="make" id='make' name='make' style="width: 100%;"/>
+              </div>
+              <div style="margin-top:5%;">
+                <label for='model'><strong>Model</strong></label><br>
+                <input type="search" v-model="model" id='model' name='model' style="width: 100%;"/>
+              </div>
+              <div style="margin-top:5%;">
+                <button id="submit"  v-on:click="search" class="btn btn-success">Search</button> 
+              </div>
+          </div>
+      
+      
+
+
+
       
       <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
         <div class="grid-container">
@@ -352,6 +374,7 @@ const Explore = {
   `,
   created: function () {
     self = this;
+    
 
     fetch("/api/cars", {
       method: "GET",
@@ -376,10 +399,40 @@ const Explore = {
         console.log(error);
       });
   },
-  methods: {},
+  methods: {
+    search:function() {
+      let self = this;
+      let make = self.make;
+      let model = self.model;
+      let params={"make":make,"model":model};
+      fetch("/api/search"+"?make="+make, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.current_user).token}`,
+          "X-CSRFToken": token,
+        },
+        credentials: "same-origin",
+       
+        })
+        .then(function (response) {
+           return response.json();
+        })
+        .then(function (jsonResponse) {
+          if (jsonResponse.hasOwnProperty("cars")) {
+            if (jsonResponse.cars.length != 0) {
+              self.cars = jsonResponse.cars;
+              self.postFlag = true;
+            }
+          }
+
+        });
+    }
+  },
   data: function () {
     return {
       cars: [],
+      make:"",
+      model:"",
       postFlag: false,
     };
   },
@@ -529,31 +582,60 @@ const Profile = {
   name: "Profile",
   template: `
   <div>
-  <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
-    <div class="card row" style="width:100%">
-      <div class="card-body row profile-haeder" style="padding: 0;" >
-      <img id="profile_image" class="col-md-2" v-bind:src="user.profile_image" style="width: 100%; height: 15%" />
-      <div id="profile_info" class="col-md-7" style="margin-top: 0px;padding-right: 0;">
+    <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
+      <div class="card row" style="width:100%">
+        <div class="card-body row profile-haeder" style="padding: 0;" >
+          <img id="profile_image" class="col-md-2" v-bind:src="user.profile_image" style="width: 100%; height: 15%" />
+          <div id="profile_info" class="col-md-7" style="margin-top: 0px;padding-right: 0;">
         
-          <label>{{ user.profile_image }}</label><br>
-          <label>{{ user.name }}</label><br>
-          <label>{{ user.username }}</label><br>
-          <p id="bio" style="color: gray;">
-            {{ user.bio }}
-          </p>
+            <label>{{ user.profile_image }}</label><br>
+            <label>{{ user.name }}</label><br>
+            <label>{{ user.username }}</label><br>
+            <p id="bio" style="color: gray;">
+              {{ user.bio }}
+            </p>
             <label>{{ user.email }}</label><br>
             <label>{{ user.location }}</label><br>
             <label>{{ user.date_joined }}</label>
     
-          
-        </div>
+          </div>
         
+        </div>
       </div>
-    </div>
+      <h3>Cars Favourited</h3>
+      <div v-if="postFlag" class="col-md-7" style="margin: 0 auto;">
+        <div class="grid-container">
+          <div class="prop" v-for="(car, index) in cars">
+            <img id="pro-photo" v-bind:src=car.photo class="display-grid-pic"/>
+            <div class="text-paddding">
+		          <div class="margin Row">
+                <span class="headr ">{{ car.year }}</span>
+                <span class="faide">{{ car.make }}</span> 
+			        </div>
+			        <div class="">
+                <span class="faide">{{ car.model }}</span> 
+			        </div>
+			        <div class="margin-top">
+                <span class="btn-style">{{ car.price }}</span>
+			        </div>
+            </div>
+		        <div class="view-btn margin-top2" >
+              <router-link class="btn btn-success col-md-5" :to="{name: 'cars', params: {car_id: car.id}}">View Property</router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="alert alert-primary" >
+          hi
+        </div>
+      </div>
+
+
     </div>
     <div v-else>
       <div class="alert alert-primary" >
-        
+        no
       </div>
     </div>
   </div>
@@ -575,12 +657,39 @@ const Profile = {
     }).catch(function(error){
       console.log(error);
     });
-  },
+
+    fetch(`/api/users/${self.$route.params.user_id}/favourites`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.current_user).token}`,
+        "X-CSRFToken": token,
+      },
+      credentials: "same-origin",
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (jsonResponse) {
+        if (jsonResponse.hasOwnProperty("cars")) {
+          if (jsonResponse.cars.length != 0) {
+            self.cars = jsonResponse.cars.reverse();
+            self.postFlag = true;
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+
+  } 
+  ,
   data: function(){
     return {
       user: null,
       postFlag: false,
-      cu_id: (this.$route.params.user_id == JSON.parse(localStorage.current_user).id) ? true : false
+      cu_id: (this.$route.params.user_id == JSON.parse(localStorage.current_user).id) ? true : false,
+      cars: [],
     }
   }
 };
@@ -619,6 +728,9 @@ const ViewCar = {
         <div class="margin-top2 view-btn2 color margin-bottom">	
             <a href="#" class="color">Send Realtor</a>
         </div>
+            <img class="like-ico liked" src="../static/images/liked.png"  v-on:click="like" style="width:20px; display: none;"/>
+            <img class="like-ico like" src="../static/images/like.png"  v-on:click="like" style="width:20px;"/>
+
          </div>
         
     </div>
@@ -631,33 +743,33 @@ const ViewCar = {
     </div>
   </div>
   
-  `,
-  methods: {
-    follow: function(){
+  `,methods: {
+    like: function(event){
       self = this;
+      let node_list = event.target.parentElement.children;
+      let car_id = self.$route.params.car_id;
       
-      fetch(`/api/users/${self.$route.params.user_id}/follow`,{
+      fetch(`/api/cars/${car_id}/favourite`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${JSON.parse(localStorage.current_user).token}`,
-          "Content-Type": "application/json",
-          'X-CSRFToken': token
+          'X-CSRFToken': token,
+          'Content-Type': 'application/json'
         },
-        credentials: 'same-origin',
-        body: JSON.stringify({"follower_id": JSON.parse(localStorage.current_user).id, "user_id": self.$route.params.user_id})
+        credentials: "same-origin",
+        body: JSON.stringify({"user_id": JSON.parse(localStorage.current_user).id, "car_id": car_id})
       }).then(function(response){
         return response.json();
       }).then(function(jsonResponse){
         
-        if(jsonResponse.hasOwnProperty("message") && jsonResponse.status==201 ){
-          $("#follow-btn")[0].innerHTML="Following";
-          $("#follow-btn").removeClass("btn-primary");
-          $("#follow-btn").addClass("btn-success")
-          ++ self.user.followers;
+        if(jsonResponse.hasOwnProperty("status")){
+          if(jsonResponse.status == 201){
+            event.target.style.display="none"
+            event.target.previousElementSibling.style.display="";
+          }
         }
-        
       }).catch(function(error){
-        console.log(error)
+        console.log(error);
       });
     }
   },

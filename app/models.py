@@ -36,7 +36,7 @@ class Favourites(db.Model):
     __tablename__ = "favourites"
 
     def __init__(self,car_id,user_id):
-        self.car_id = post_id
+        self.car_id = car_id
         self.user_id = user_id
         
 

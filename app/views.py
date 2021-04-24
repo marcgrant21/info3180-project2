@@ -7,6 +7,7 @@ from app.models import *
 import os, datetime
 import jwt
 from functools import wraps
+from sqlalchemy import or_
 
 
 
@@ -181,7 +182,58 @@ def car(car_id):
         return jsonify(response)
 
 
+@app.route('/api/cars/<car_id>/favourite',methods = ['POST'])
+@token_authenticate
+def like(car_id):
+    
+    request_payload = request.get_json()
+    user_id = request_payload["user_id"]
+    car_id = request_payload["car_id"]
+    
+    car = Cars.query.filter_by(id=car_id).first()
+    favourite = Favourites.query.filter_by(car_id=car_id).all()
+    
+    if car is None:
+        return jsonify(staus="", message="Post does not exist")
+        
+    if favourite is not None:
+        for like in favourite:
+            if like.user_id == user_id:
+                return jsonify(status=200, message="already liked")
+        
+    Fav = Favourites(car_id = car_id, user_id = user_id)
+    
+    db.session.add(Fav)
+    db.session.commit()
+    
+    return jsonify({"status":201,'message': 'add favourite'})
 
+
+@app.route('/api/users/<user_id>/favourites',methods = ['GET'])
+@token_authenticate
+def favourites(user_id):
+    favcars = Favourites.query.filter_by(user_id = user_id).all()
+    fvcars = []
+    for fv in favcars:
+        car = Cars.query.filter_by(id=fv.car_id).first()
+        Obj = {"id": car.id, "user_id": car.user_id,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join("../",app.config['UPLOAD_VCARPHOTO'],car.photo) }
+        fvcars.append(Obj)
+        
+    return jsonify(cars=fvcars)
+
+@app.route('/api/search', methods = ['GET'])
+@token_authenticate
+def search():
+    make = request.args.get("make")
+    model = request.args.get("model")
+
+    filcars = Cars.query.filter((Cars.model==model) | (Cars.make==make))
+    vcars = []
+    for car in filcars:
+        carObj = {"id": car.id, "user_id": car.user_id,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join(app.config['UPLOAD_VCARPHOTO'],car.photo) }
+        vcars.append(carObj)
+        
+    return jsonify(cars=vcars)
 
 
 
@@ -190,7 +242,7 @@ def strf_time(date, dateFormat):
 
 # errors from the form if validation fails
 def form_errors(form):
-    
+    Cars.query.all()
     errorArr = []
     
     for field, errors in form.errors.items():
@@ -211,6 +263,10 @@ def add_header(response):
     return response
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    """Custom 404 page."""
+    return render_template('404.html'), 404
 
 
 
