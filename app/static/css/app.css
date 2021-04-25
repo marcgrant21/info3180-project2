@@ -1,15 +1,11 @@
-body {
-    padding-top: 5rem;
-}
+
+
+
 /*main styling*/
 body {
-    padding-top: 5rem;
-    background-color: #f5efe6;
+    padding-top: 3.5rem;
 }
 
-.center{
-    margin: 0 auto;
-}
 
 .small-logo{
     width: 30px;
@@ -47,7 +43,7 @@ body {
 .card-body #submit{
     width: 100%;
     height: 80%;
-    margin-top: 13%;
+    margin-top: 0%;
 }
 
 .card{
@@ -56,6 +52,25 @@ body {
     box-shadow: 0.5px 0.5px 10px grey;
     border-radius: 2px;
     padding: 24px
+}
+
+
+.cardf{
+  width: 40rem;
+  /*height: 18rem;*/
+  box-shadow: 0.5px 0.5px 10px grey;
+  border-radius: 2px;
+  padding: 24px;
+  background-color: white;
+}
+
+.cardS{
+  width: 50rem;
+  /*height: 18rem;*/
+  box-shadow: 0.5px 0.5px 10px grey;
+  border-radius: 2px;
+  padding: 24px;
+  background-color: white;
 }
 
 .card-header{
@@ -80,9 +95,7 @@ body {
     text-decoration: none;
 }
 
-body {
-    padding-top: 5rem;
-  }
+
   
   .inline {
     display: inline;
@@ -143,7 +156,9 @@ body {
   }
   .text-paddding {
     padding-left: 5%;
+    margin-bottom: 25%;
   }
+  
   
   .grid-container {
     display: grid;
@@ -155,7 +170,14 @@ body {
   
   .display-grid-pic {
     width: 250px;
+    height: 180px;
+    border: 1px solid #999999;
+  }
+
+  .display-grid-profile-pic {
+    width: 200px;
     height: 200px;
+    border-radius: 50px;
     border: 1px solid #999999;
   }
   
@@ -167,14 +189,36 @@ body {
     box-shadow: 0px 2px 8px grey;
     position: relative;
   }
-  
+  .prop2 {
+    margin-left: 0px;
+    width: 250px;
+    background-color: white;
+    margin-bottom: 2%;
+    box-shadow: 0px 2px 8px grey;
+    position: relative;
+  }
+
   .headr {
+    font-size: 27px;
+    font-weight: bold;
+    color:black;
+  }
+  .texts {
     font-size: 16px;
     font-weight: bold;
+    color:black;
+  }
+
+  .txt {
+    font-size: 13px;
   }
   
   .faide {
     font-size: 13px;
+    color: Grey;
+  }
+  .faideUp {
+    font-size: 20px;
     color: Grey;
   }
   
@@ -182,14 +226,14 @@ body {
     font-size: 13px;
     width: 80px;
     height: 30px;
-    border-radius: 20px;
+    border-radius: 10px;
     border: 1px solid #999999;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 3px;
     padding-bottom: 3px;
     color: white;
-    background-color: blue;
+    background-color: rgb(28, 206, 73);
   }
   
   .margin-top {
@@ -200,31 +244,31 @@ body {
     text-align: center;
     display: block;
     background-color: LightSeaGreen;
-    width: 252px;
-    height: 40px;
+    width: 200px;
+    height: 30px;
     color: white;
     padding-top: 2%;
-    margin-top: 20px;
+    margin-top: 10px;
     position: absolute;
-    bottom: 0;
+    border-radius: 10px;
+    bottom: 10px;
+    margin-left: 25px;
   }
   
   .block {
     display: block;
   }
   
-  .card {
-    width: 25rem;
-  }
   
   .prop_pic {
     width: 380px;
-    height: 350px;
+    height: 480px;
+  
   }
   
   .ind-prop {
     margin-left: 15px;
-    width: 800px;
+    width: 850px;
     background-color: white;
     margin-bottom: 2%;
     box-shadow: 0px 2px 8px grey;
@@ -305,9 +349,12 @@ body {
     margin-top: 5%;
     margin-left: 20%;
   }
+  .spacebetween {
+    margin-left: 5%;
+  }
   
   .text-box {
-    width: 370px;
+    width: 390px;
     height: 120px;
     overflow: auto;
   }
@@ -317,8 +364,8 @@ body {
   }
   
   .icon-size {
-    widows: 16px;
-    height: 16px;
+    widows: 14px;
+    height: 14px;
     margin-right: 6px;
     color: Grey;
   }

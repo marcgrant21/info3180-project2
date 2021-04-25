@@ -1,7 +1,7 @@
 const app = Vue.createApp({
-  data() {
-    return {};
-  },
+  data: function () { 
+    return{};
+  }
 });
 
 app.component("app-header", {
@@ -9,17 +9,13 @@ app.component("app-header", {
   template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <img src='static/images/car.png' class="small-logo"/> &nbsp  &nbsp
-      <a class="navbar-brand" href="#"> United Auto Sale</a>
+      <a class="navbar-brand" href="#" v-if="auth"> United Auto Sale</a>
+      <a class="navbar-brand" href="/" v-else> United Auto Sale</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-      </div>
-        
-        <ul class="navbar-nav" v-if="auth">
+      <div class="collapse navbar-collapse" style="margin-left: 5%;" v-if="auth">
+        <ul class="navbar-nav mr-auto" >
             <li class="nav-item active">
               <router-link class="nav-link" to="/cars/new">Add Car</router-link>
             </li>
@@ -29,23 +25,23 @@ app.component("app-header", {
             <li class="nav-item active">
               <router-link class="nav-link" :to="{name: 'users', params: {user_id: cu_id}}">My Profile</router-link>
             </li>
+        </ul>
+        <ul class="navbar-nav mr-auto" style="margin-left: 70%;" >
             <li  class="nav-item active">
               <router-link class="nav-link" to="/logout">Logout</router-link>
             </li>
         </ul>
-        <ul class="navbar-nav" v-else>
-            <li class="nav-item active">
-              <router-link class="nav-link" to="/">Home <span class="sr-only">(current)</span></router-link>
-            </li>
+      </div>
+      <div class="collapse navbar-collapse" style="margin-left: 75%;" v-else>
+        <ul class="navbar-nav">
             <li class="nav-item active">
               <router-link class="nav-link" to="/register">Register</router-link>
             </li>
             <li  class="nav-item">
               <router-link class="nav-link active" to="/login">Login</router-link>
-            </li>
-       
-           
+            </li> 
         </ul>
+      </div>
     </nav>
     `,
   data: function () {
@@ -77,7 +73,7 @@ app.component("app-footer", {
 const Home = {
   name: "Home",
   template: `
-     <div class="row">
+     <div class="row back" style="" id="b">
       <div class="col-md-4  landing-container-child float-clear" style="margin-top: 6%;">
         <div>
           <div class="card-body">
@@ -96,8 +92,13 @@ const Home = {
       </div>
     </div>
     `,
+    
+  created: function () { localStorage.removeItem("current_user")},
   data: function () {
-    return {};
+    return {
+     
+
+    };
   },
 };
 
@@ -239,7 +240,7 @@ const Login = {
                 <input type='password' id='password' name='password' style="width: 100%;"/>
               </div>
               <div style="margin-top:5%;">
-                <button id="submit" class="btn btn-success">Login</button> 
+                <button id="submit" v-on:click="toggleBackground" class="btn btn-success">Login</button> 
               </div>
               <div v-if='messageFlag' style="margin-top:5%;">
                 <div class="alert alert-danger center" style="width: 100%; margin-top: 5%;">
@@ -413,7 +414,7 @@ const Explore = {
       let make = self.make;
       let model = self.model;
       let params={"make":make,"model":model};
-      fetch("/api/search"+"?make="+make, {
+      fetch("/api/search"+"?make="+make+"&model="+model, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.current_user).token}`,
@@ -451,7 +452,7 @@ const AddCar = {
   template: `
   <div>
     <form class="center" id="npostform" @submit.prevent="submit" enctype="multipart/form-data">
-      <div class="card-header center headr"><strong>Add New Car</strong></div>
+      <div class="card-header headr" style="margin-left: 240px;"><strong>Add New Car</strong></div>
         <div class="cardf center">
           <div class="card-body">
             <div class="row " style="padding-left:12px; margin-bottom: 13px;">
@@ -467,8 +468,8 @@ const AddCar = {
 
             <div class="row " style="padding-left:12px; margin-bottom: 13px;">
               <div>
-                 <label>colour:</label><br/>
-                  <input type='text' id='colour' name='colour' style="width: 250px;"/>
+                <label>colour:</label><br/>
+                <input type='text' id='colour' name='colour' style="width: 250px;"/>
               </div>
               <div class="spacebetween">
                 <label>year:</label><br/>
@@ -514,7 +515,7 @@ const AddCar = {
 
           	<label><strong>Upload Photo</strong></label><br>
           	<input id="user_id" name="user_id" v-bind:value="cu_id" style="display: none;"/>
-            <label class="btn" style="border: 0.5px solid black" style="width: 75px;" for="photo"><strong>Browse</strong></label>
+            <label class="btn" style="border: 0.5px solid black; width: 75px;" for="photo"><strong>Browse</strong></label>
             <label>{{ filename }}</label>
             <br>
             <input type = "file" id="photo" name="photo" style="display: none;" v-on:change="updateFilename"/>
@@ -535,8 +536,8 @@ const AddCar = {
               </div>
             </div>
           </div>    
-        </div>
       </div>
+      
     </form>
   </div>
   `,
