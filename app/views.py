@@ -63,6 +63,7 @@ def register():
             name=form.name.data
             mail=form.email.data
             photo = form.photo.data
+
             date = str(datetime.date.today())
             filename = uname+secure_filename(photo.filename)
             
@@ -165,8 +166,13 @@ def allcars():
 @token_authenticate
 def profile(user_id):
         user = Users.query.filter_by(id=user_id).first()
+        c_y = int(user.date_joined.split("-")[0])
+        c_m = int(user.date_joined.split("-")[1])
+        c_d = int(user.date_joined.split("-")[2])
+    
+        user.date_joined = format_date_joined(c_y, c_m, c_d)
       
-        response = {"status": "ok", "ur_data":{"name":user.name, "location": user.location,"email": user.email,"username": "@"+user.username, "date_joined": user.date_joined, "bio": user.biography, "profile_image": os.path.join("../", app.config['UPLOAD_VPROFILE'],user.profile_photo)}}
+        response = {"status": "ok", "ur_data":{"name":user.name, "location": user.location,"email": user.email,"username": "@"+user.username, "date_joined":user.date_joined , "bio": user.biography, "profile_image": os.path.join("../", app.config['UPLOAD_VPROFILE'],user.profile_photo)}}
         
         return jsonify(response)
 
@@ -237,8 +243,9 @@ def search():
 
 
 
-def strf_time(date, dateFormat):
-    return datetime.date(int(date.split('-')[0]),int(date.split('-')[1]),int(date.split('-')[2])).strftime(dateFormat)
+def format_date_joined(yy,mm,dd):
+    return datetime.date(yy,mm,dd).strftime("%B %d,%Y")
+
 
 # errors from the form if validation fails
 def form_errors(form):
