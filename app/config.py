@@ -9,11 +9,9 @@ class Config(object):
     UPLOAD_VPROFILE = os.environ['UPLOAD_VPROFILE'] = 'static/uploads/profile' 
     UPLOAD_VCARPHOTO = os.environ['UPLOAD_VCARPHOTO'] = 'static/uploads/carPhoto'
     
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://project2:mkm2021@localhost/project2'
-    #'postgresql://lxoeryfjfttxwv:b238acaf7ee1ea8c6c1b44765c2f0377b9079332191a6593c7acee51153da13f@ec2-52-205-3-3.compute-1.amazonaws.com:5432/da1riu584cl0p7'
-    #
-    #'postgresql://qjfvlgfydfwhrs:7b9a737d0dc3370cbc16032a0d91e5721c8449e71064ca41e63dbe8c7a2f6a78@ec2-34-225-167-77.compute-1.amazonaws.com:5432/d6b1u73jbtm9ht'
-    #
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://cauhwnjeiczuys:ffda00ba97591dd7ae158a2e3012cf3b8f10f97fd9054dcc8f370360a49828ec@ec2-34-225-167-77.compute-1.amazonaws.com:5432/d6lnto66pign5j'
+    #'postgresql://project2:mkm2021@localhost/project2'
+  
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
