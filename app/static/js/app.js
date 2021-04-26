@@ -632,7 +632,7 @@ const Profile = {
                   <span class="texts">{{ car.year }} {{ car.make }}</span>
                 </div>
                 <div class="margin-top btn-style row" style="margin-left:6px; width:100px;">
-                  <img src='static/images/tag.png' class="icon-size" style="margin-top:5%;"/> 
+                  <img src='../static/images/tag.png' class="icon-size" style="margin-top:5%;"/> 
                   $<span class="">{{ car.price }}</span>
                 </div> 
               </div>
