@@ -14,7 +14,7 @@ class Car(FlaskForm):
     transmission = StringField('transmission', validators=[InputRequired()])
     car_type = StringField('car_type', validators=[InputRequired()])
     price = StringField('price', validators=[InputRequired()])
-    photo= FileField('Car Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
+    photo= FileField('Car Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     user_id = StringField("", validators=[InputRequired()])
 
     
