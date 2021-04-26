@@ -25,7 +25,7 @@ class User(FlaskForm):
     email = StringField('Email', validators=[InputRequired()])
     location = StringField('Location', validators=[InputRequired()])
     biography = TextAreaField('Biography',validators=[InputRequired()])
-    photo= FileField('Profile Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
+    photo= FileField('Profile Photo',validators=[FileRequired(),FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
 
     
 class LoginForm(FlaskForm):
