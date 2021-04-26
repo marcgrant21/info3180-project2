@@ -7,7 +7,7 @@ from app.models import *
 import os, datetime
 import jwt
 from functools import wraps
-from sqlalchemy import or_
+from sqlalchemy import func
 
 
 
@@ -233,7 +233,7 @@ def search():
     make = request.args.get("make")
     model = request.args.get("model")
 
-    filcars = Cars.query.filter((Cars.model.lower()==model.lower()) | (Cars.make.lower()==make.lower()))
+    filcars = Cars.query.filter((func.lower(Cars.model)==func.lower(model)) | (func.lower(Cars.make)==func.lower(make)))
     vcars = []
     for car in filcars:
         carObj = {"id": car.id, "user_id": car.user_id,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join(app.config['UPLOAD_VCARPHOTO'],car.photo) }
