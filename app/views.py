@@ -233,7 +233,7 @@ def search():
     make = request.args.get("make")
     model = request.args.get("model")
 
-    filcars = Cars.query.filter((Cars.model==model) | (Cars.make==make))
+    filcars = Cars.query.filter((Cars.model.lower()==model.lower()) | (Cars.make.lower()==make.lower()))
     vcars = []
     for car in filcars:
         carObj = {"id": car.id, "user_id": car.user_id,"make": car.make,"model": car.model,"year": car.year,"price": car.price,"photo": os.path.join(app.config['UPLOAD_VCARPHOTO'],car.photo) }
